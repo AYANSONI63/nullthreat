@@ -1,0 +1,9 @@
+tensorflow==2.18.0
+fastapi[standard]
+uvicorn 
+pandas
+scikit-learn
+python-whois
+requests
+python-dotenv
+slowapi
