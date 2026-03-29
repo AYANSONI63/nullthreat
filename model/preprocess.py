@@ -129,7 +129,7 @@ def extract_url_features(url):
         no_of_hyphens = url.count('-')
         no_of_digits = sum(c.isdigit() for c in url)
         no_of_letters = sum(c.isalpha() for c in url)
-        no_of_special = len(re.findall(r'[^a-zA-Z0-9.]', url))
+        no_of_special = len(re.findall(r'[^a-zA-Z0-9.]', url))              # Finding the special all special characters from the raw strings 
         digit_ratio = no_of_digits / url_length if url_length>0 else 0 
         letter_ratio = no_of_letters / url_length if url_length>0 else 0 
         has_obfuscation = 1 if '%' in url else 0 
@@ -182,7 +182,7 @@ urlhaus_features_df = pd.DataFrame(urlhaus_features.tolist())
 
 
 # Labling all url as malicious 
-urlhaus_features_df['label'] = 1
+urlhaus_features_df['label'] = 0
 
 
 print(f"URLhaus after feature extraction: {len(urlhaus_features_df)} rows")
@@ -190,3 +190,63 @@ print(f"Sample features:\n{urlhaus_features_df.head(3)}")
 
 # print("URLhaus columns:", urlhaus_features_df.columns.tolist())
 # print("PhiUSIIL columns:", phiusiil_df.columns.tolist())
+
+
+
+# Aligning and Combining Datasets
+
+print("\n------Aligning and Combining Datasets-----------\n")
+
+phiusiil_cols = phiusiil_df.columns.to_list()
+urlhaus_cols = urlhaus_features_df.columns.to_list()
+
+print(f"PhiUSIIL columns: {len(phiusiil_cols)}")
+print(f"URLhaus columns: {len(urlhaus_cols)}")
+
+
+# Adding missing PhiUSIIL columns in URLhaus with 0 
+
+for col in phiusiil_cols:
+
+    if col not in urlhaus_features_df.columns:
+        urlhaus_features_df[col] = 0
+
+
+# Reordering URLhaus columns to match PhiUSIIL exactly 
+
+urlhaus_features_df = urlhaus_features_df[phiusiil_cols]
+
+
+print(f"URLhaus after alignment : {urlhaus_features_df.shape}")
+
+
+# Calculating gap and sample URLhaus accordingly 
+
+
+safe_count = len(phiusiil_df[phiusiil_df['label'] == 1])
+malicious_count = len(phiusiil_df[phiusiil_df['label'] == 0])
+
+
+print(f"\nPhiUSIIL safe: {safe_count}")
+print(f"PhiUSIIL malicious: {malicious_count}")
+
+gap = safe_count - malicious_count
+print(f"Gap to fill: {gap}")
+
+
+# Smapling exactly gap rows form URLhaus 
+
+urlhaus_sample = urlhaus_features_df.sample(n=min(gap, len(urlhaus_features_df)), random_state=42)
+
+print(f"URLhaus sample used: {len(urlhaus_sample)} rows")
+
+# Combining PhiUSIIL and URLhaus
+
+combined_df = pd.concat([phiusiil_df, urlhaus_sample], axis = 0, ignore_index= True)
+
+# Shuffle
+
+combined_df = combined_df.sample(frac=1, random_state=42).reset_index(drop=True)
+
+print(f"\nCombined dataset: {len(combined_df)} rows")
+print(f"Label distribution:\n{combined_df['label'].value_counts()}")
