@@ -250,3 +250,48 @@ combined_df = combined_df.sample(frac=1, random_state=42).reset_index(drop=True)
 
 print(f"\nCombined dataset: {len(combined_df)} rows")
 print(f"Label distribution:\n{combined_df['label'].value_counts()}")
+
+
+print("\nDropping string columns...")
+
+
+string_cols_to_drop = []
+
+for col in ['URL', 'Title', 'Robots', 'TLD']:
+
+    if col in combined_df:
+        string_cols_to_drop.append(col)
+
+
+if string_cols_to_drop:
+    combined_df = combined_df.drop(columns=string_cols_to_drop)
+    print(f"Dropped: {string_cols_to_drop}")
+
+print(f"Final columns: {combined_df.shape[1]}")
+
+
+print("\nSeprating features and labels...")
+
+X = combined_df.drop(columns=['label'])
+y = combined_df['label']
+
+
+# Saving column name before everything converts to numpy
+
+features_cols = X.columns.tolist()
+
+print(f"Features shape: {X.shape}")
+print(f"Target shape: {y.shape}")
+print(f"Total features: {len(features_cols)}")
+
+
+
+# Train test split 
+
+print("\nSplitting into train and test...")
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+print(f"Train set: {X_train.shape[0]} rows")
+print(f"Test set: {X_test.shape[0]} rows")
+print(f"Train label distribution:\n{y_train.value_counts()}")
