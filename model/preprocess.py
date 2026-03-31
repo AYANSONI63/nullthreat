@@ -295,3 +295,24 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 print(f"Train set: {X_train.shape[0]} rows")
 print(f"Test set: {X_test.shape[0]} rows")
 print(f"Train label distribution:\n{y_train.value_counts()}")
+
+
+
+# StandardScaler Pipeline 
+
+print("\nBuilding StandardScaler Pipeline...")
+
+
+numerical_cols = X_train.columns.tolist()
+
+preprocessor = ColumnTransformer(transformers=[('scaler', StandardScaler(), numerical_cols)], remainder='drop')
+
+pipeline = Pipeline(steps=[('preprocessor', preprocessor)])
+
+# Fitting on train only 
+
+X_train_scaled = pipeline.fit_transform(X_train)
+X_test_scaled = pipeline.transform(X_test)
+
+print(f"Scaled train shape: {X_train_scaled.shape}")
+print(f"Scaled test shape: {X_test_scaled.shape}")
