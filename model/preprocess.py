@@ -1,13 +1,14 @@
 import pandas as pd 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import re
 import pickle
 import os 
 from utils import is_ip_domain
+from imblearn.over_sampling import SMOTE
 
 
 print("Loading dataset...")
@@ -229,20 +230,11 @@ malicious_count = len(phiusiil_df[phiusiil_df['label'] == 0])
 
 print(f"\nPhiUSIIL safe: {safe_count}")
 print(f"PhiUSIIL malicious: {malicious_count}")
+print(f"URLhaus malicious rows: {len(urlhaus_features_df)}")
 
-gap = safe_count - malicious_count
-print(f"Gap to fill: {gap}")
+# Combining PhiUSIIL and URLhaus - no gap sampling, to use everydata entries of urlhaus
 
-
-# Smapling exactly gap rows form URLhaus 
-
-urlhaus_sample = urlhaus_features_df.sample(n=min(gap, len(urlhaus_features_df)), random_state=42)
-
-print(f"URLhaus sample used: {len(urlhaus_sample)} rows")
-
-# Combining PhiUSIIL and URLhaus
-
-combined_df = pd.concat([phiusiil_df, urlhaus_sample], axis = 0, ignore_index= True)
+combined_df = pd.concat([phiusiil_df, urlhaus_features_df], axis = 0, ignore_index= True)
 
 # Shuffle
 
@@ -258,7 +250,6 @@ print("\nDropping string columns...")
 string_cols_to_drop = []
 
 for col in ['URL', 'Title', 'Robots', 'TLD']:
-
     if col in combined_df:
         string_cols_to_drop.append(col)
 
@@ -278,11 +269,11 @@ y = combined_df['label']
 
 # Saving column name before everything converts to numpy
 
-features_cols = X.columns.tolist()
+feature_cols = X.columns.tolist()
 
 print(f"Features shape: {X.shape}")
 print(f"Target shape: {y.shape}")
-print(f"Total features: {len(features_cols)}")
+print(f"Total features: {len(feature_cols)}")
 
 
 
@@ -316,3 +307,58 @@ X_test_scaled = pipeline.transform(X_test)
 
 print(f"Scaled train shape: {X_train_scaled.shape}")
 print(f"Scaled test shape: {X_test_scaled.shape}")
+
+
+# SMOTE on scaled traning data only 
+
+
+print("\nApplying SMOTE on traning data...")
+
+smote = SMOTE(k_neighbors=5, random_state=42)
+
+X_train_balanced, y_train_balanced = smote.fit_resample(X_train_scaled, y_train)
+
+print(f"Before SMOTE: {X_train_scaled.shape[0]} rows")
+print(f"After SMOTE: {X_train_balanced.shape[0]} rows")
+print(f"Balanced Label distribution:\n{pd.Series(y_train_balanced).value_counts()}")
+
+
+
+print("\nSaving file...")
+
+
+os.makedirs("model/saved_model", exist_ok=True)
+
+
+# Saving processed array for TensorFlow training 
+
+np.save("dataset/X_train.npy", X_train_balanced)
+np.save("dataset/X_test.npy", X_test_scaled)
+np.save("dataset/y_train.npy", y_train_balanced)
+np.save("dataset/y_test.npy", y_test.values)
+
+# Saving pipeline for FastAPI - load and preprocesses new url
+
+with open("model/saved_model/pipeline.pkl", "wb") as f:
+    pickle.dump(pipeline, f)
+
+
+# Saving feature column name for FastAPI to align inputs 
+
+with open("model/saved_model/feature_cols.pkl", "wb") as f:
+    pickle.dump(feature_cols, f)
+
+
+print("Saved: dataset/X_train.npy")
+print("Saved: dataset/X_test.npy")
+print("Saved: dataset/y_train.npy")
+print("Saved: dataset/y_test.npy")
+print("Saved: model/saved_model/pipeline.pkl")
+print("Saved: model/saved_model/feature_cols.pkl")
+
+print("\n" + "="*50)
+print("PREPROCESSING COMPLETE")
+print("="*50)
+print(f"Total features: {X_train_balanced.shape[1]}")
+print(f"Training samples: {X_train_balanced.shape[0]}")
+print(f"Testing samples: {X_test_scaled.shape[0]}")

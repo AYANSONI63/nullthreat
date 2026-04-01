@@ -7,3 +7,4 @@ python-whois
 requests
 python-dotenv
 slowapi
+imbalanced-learn
