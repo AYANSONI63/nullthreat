@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, roc_curve
 import pickle
 import os 
@@ -23,11 +24,23 @@ print(f"y_train : 0={int((y_train==0).sum())}, 1={int((y_train==1).sum())}")
 print(f"y_test : 0={int((y_test==0).sum())}, 1={int((y_test==1).sum())}")
 
 
+# Creating Validation split from training data
+
+print("\nCreating validation split from training data...")
+
+X_train_fit, X_val, y_train_fit, y_val = train_test_split(X_train, y_train, test_size=0.1, random_state=42, stratify=y_train)
+
+
+print(f"Training samples : {X_train_fit.shape[0]}")
+print(f"Validation samples: {X_val.shape[0]}")
+print(f"Val class distribution 0:{int((y_val==0).sum())}, 1={int((y_val==1).sum())}")
+
+
 # Building model 
 
 print("Building Model...")
 
-INPUT_SHAPE = X_train.shape[1]
+INPUT_SHAPE = X_train_fit.shape[1]
 
 model = tf.keras.Sequential([
     
@@ -88,9 +101,9 @@ callbacks = [
 
 
     # Reduce Learning rate when val_loss plateau 
-
+    
     tf.keras.callbacks.ReduceLROnPlateau(
-        moniort='val_loss',
+        monitor='val_loss',
         factor=0.5,
         patience=3,
         min_lr=1e-6,
@@ -122,8 +135,8 @@ class_weight = {
 }
 
 
-safe_count = int((y_train == 1).sum())
-malicious_count = int((y_train == 0).sum())
+safe_count = int((y_train_fit == 1).sum())
+malicious_count = int((y_train_fit == 0).sum())
 
 
 if safe_count != malicious_count:
@@ -140,13 +153,13 @@ else:
 print("Training model...")
 
 history = model.fit(
-    X_train, y_train,
+    X_train_fit, y_train_fit,
     epochs=50,
     batch_size=512,
-    validation_split=0.1,
+    validation_data=(X_val, y_val),
     callbacks=callbacks,
     class_weight=class_weight,
-    shuffel=True,
+    shuffle=True,
     verbose=1,
 )
 
@@ -166,5 +179,79 @@ y_prob = model.predict(X_test, verbose=0).flatten()
 
 
 # Default thresholds 0.5
-y_pred_default = (y_prod >= 0.5).astype(int)
+y_pred_default = (y_prob >= 0.5).astype(int)
+
+
+
+print("\n---Default threshold (0.5)---")
+print(classification_report(y_test, y_pred_default, target_names=['Malicious', 'Safe']))
+
+
+print("Confusion Matrix")
+print(confusion_matrix(y_test, y_pred_default))
+
+
+roc_auc = roc_auc_score(y_test, y_prob)
+print(f"\nROC AUC Score: {roc_auc:.4f}")
+
+
+
+# Final optimal threshold from ROC curve 
+
+print("\nFinding optimal threshold...")
+
+fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+
+
+# Best threshold 
+
+optimal_idx = np.argmax(tpr - fpr)
+optimal_threshold = float(thresholds[optimal_idx])
+
+
+print(f"Optimal threshold: {optimal_threshold:.4f}")
+
+
+# Evaluating at optimal threshold 
+y_pred_optimal = (y_prob >= optimal_threshold).astype(int)
+
+
+print(f"\n--- Optimal Threshold ({optimal_threshold:.4f}) ---")
+print(classification_report(y_test, y_pred_optimal,
+      target_names=['Malicious', 'Safe']))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_optimal))
+
+
+# Saving best model
+
+
+print("\nSaving model...")
+
+os.makedirs("model/saved_model", exist_ok=True)
+
+# Save final model
+model.save("model/saved_model/nullthreat_model.keras")
+
+
+# Save threshold — FastAPI will use this to make final decision
+threshold_data = {
+    "optimal_threshold": optimal_threshold,
+    "roc_auc": roc_auc
+}
+
+# Saving model and Threshold 
+
+with open("model/saved_model/threshold.json", "w") as f:
+    json.dump(threshold_data, f, indent=2)
+
+print("Saved: model/saved_model/nullthreat_model.keras")
+print("Saved: model/saved_model/threshold.json")
+
+print("\n" + "="*50)
+print("TRAINING COMPLETE")
+print("="*50)
+print(f"ROC AUC        : {roc_auc:.4f}")
+print(f"Best threshold : {optimal_threshold:.4f}")
 
