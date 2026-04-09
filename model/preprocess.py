@@ -4,10 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-import re
 import pickle
 import os 
-from utils import is_ip_domain
 from imblearn.over_sampling import SMOTE
 
 
@@ -18,34 +16,11 @@ if not os.path.exists("dataset/raw_phiusiil.csv"):
     print("ERROR: raw_phiusiil.csv not found in dataset folder")
     exit()
 
-if not os.path.exists("dataset/raw_urlhaus.csv"):
-    print("ERROR: raw_urlhaus.csv not found in dataset folder")
-    exit()
-
 
 # Load PhiUSIIL dataset 
 
 phiusiil_df = pd.read_csv("dataset/raw_phiusiil.csv")
 print(f"PhiUSIIL loaded : {len(phiusiil_df)} rows")
-
-# Reading raw line first to find the header
-
-with open("dataset/raw_urlhaus.csv", "r") as f:
-    lines = f.readlines()
-
-# finding the header line starts with # id 
-
-header_line = None 
-for line in lines:
-    if line.startswith("# id"):
-        header_line = line.strip().lstrip('# ')
-        break
-
-# Parse column names
-columns = [col.strip() for col in header_line.split(',')]
-
-urlhaus_df = pd.read_csv("dataset/raw_urlhaus.csv", comment='#', names=columns, on_bad_lines='skip')
-print(f"URLhaus loaded : {len(urlhaus_df)} rows")
 
 
 # Cleaning PhiUIIL dataset
@@ -79,170 +54,15 @@ print(f"Label Distribution :\n{phiusiil_df['label'].value_counts()}")
 phiusiil_df = phiusiil_df.rename(columns={
     'NoOfDegitsInURL': 'NoOfDigits',
     'DegitRatioInURL': 'DigitRatioInURL',
-    'DomainHasHyphen': 'DomainHyphenCount',
     'NoOfOtherSpecialCharsInURL': 'NoOfSpecialCharsInURL'
 })
 
 
-# Cleaning URLhaus and extracting URL features 
 
-print("\nEDA of URLhaus dataset...\n")
-
-# EDA for raw_urlhause
-
-print(urlhaus_df.columns.tolist())
-print(urlhaus_df.head(3))
-print(urlhaus_df.shape)
-print(urlhaus_df.dtypes)      
+print("PhiUSIIL columns:", phiusiil_df.columns.tolist())
 
 
-
-print("\nNull URLs:", urlhaus_df['url'].isnull().sum())
-print("Duplicate URLs:", urlhaus_df['url'].duplicated().sum())
-print("URL status value:", urlhaus_df['url_status'].value_counts())
-print("Threat values:", urlhaus_df['threat'].value_counts())
-
-
-# Data cleaning of URLhaus dataset 
-
-print("\nCleaning URLhaus dataset...")
-
-
-urlhaus_df = urlhaus_df[['url']].copy()
-urlhaus_df = urlhaus_df.dropna()
-urlhaus_df = urlhaus_df.drop_duplicates()
-
-print(f"URLhaus clean: {len(urlhaus_df)} rows")
-
-
-# Extracting URL based malicious features 
-
-def extract_url_features(url):
-
-    try:
-        url = str(url).strip()
-
-
-        # Basic URL features
-        url_length = len(url)
-        is_https = 1 if url.startswith("https") else 0
-        no_of_dots = url.count('.')
-        no_of_hyphens = url.count('-')
-        no_of_digits = sum(c.isdigit() for c in url)
-        no_of_letters = sum(c.isalpha() for c in url)
-        no_of_special = len(re.findall(r'[^a-zA-Z0-9.]', url))              # Finding the special all special characters from the raw strings 
-        digit_ratio = no_of_digits / url_length if url_length>0 else 0 
-        letter_ratio = no_of_letters / url_length if url_length>0 else 0 
-        has_obfuscation = 1 if '%' in url else 0 
-
-
-        # Domain Extraction(Feature extraction) 
-
-        try:
-            domain = url.split('/')[2] if '//' in url else url.split('/')[0]
-        except:
-            domain = url 
-
-
-        domain_length = len(domain)
-        is_domain_ip = is_ip_domain(domain)
-        no_of_subdomains = max(0, domain.count('.') -1)
-        domain_has_numbers = 1 if re.search(r'\d', domain) else 0
-        domain_hyphen_count = domain.count('-')
-        domain_word_count = len(domain.split('.'))
-
-        return {
-            'URLLength': url_length,
-            'IsHTTPS': is_https,
-            'NoOfDots': no_of_dots,
-            'NoOfHyphensInURL': no_of_hyphens,
-            'NoOfDigits': no_of_digits,
-            'NoOfLettersInURL': no_of_letters,
-            'NoOfSpecialCharsInURL': no_of_special,
-            'DigitRatioInURL': digit_ratio,
-            'LetterRatioInURL': letter_ratio,
-            'HasObfuscation': has_obfuscation,
-            'DomainLength': domain_length,
-            'IsDomainIP': is_domain_ip,
-            'NoOfSubDomain': no_of_subdomains,
-            'DomainHasNumbers': domain_has_numbers,
-            'DomainHyphenCount': domain_hyphen_count,
-            'DomainWordCount': domain_word_count, 
-        }
-    
-    except:
-        return None 
-    
-
-print("Extracting features from URLhaus URLs...")
-print("\nExtracting...\n")
-
-urlhaus_features = urlhaus_df['url'].apply(extract_url_features)
-urlhaus_features = urlhaus_features.dropna()
-urlhaus_features_df = pd.DataFrame(urlhaus_features.tolist())
-
-
-# Labling all url as malicious 
-urlhaus_features_df['label'] = 0
-
-
-print(f"URLhaus after feature extraction: {len(urlhaus_features_df)} rows")
-print(f"Sample features:\n{urlhaus_features_df.head(3)}")
-
-# print("URLhaus columns:", urlhaus_features_df.columns.tolist())
-# print("PhiUSIIL columns:", phiusiil_df.columns.tolist())
-
-
-
-# Aligning and Combining Datasets
-
-print("\n------Aligning and Combining Datasets-----------\n")
-
-phiusiil_cols = phiusiil_df.columns.to_list()
-urlhaus_cols = urlhaus_features_df.columns.to_list()
-
-print(f"PhiUSIIL columns: {len(phiusiil_cols)}")
-print(f"URLhaus columns: {len(urlhaus_cols)}")
-
-
-# Adding missing PhiUSIIL columns in URLhaus with 0 
-
-for col in phiusiil_cols:
-
-    if col not in urlhaus_features_df.columns:
-        urlhaus_features_df[col] = 0
-
-
-# Reordering URLhaus columns to match PhiUSIIL exactly 
-
-urlhaus_features_df = urlhaus_features_df[phiusiil_cols]
-
-
-print(f"URLhaus after alignment : {urlhaus_features_df.shape}")
-
-
-# Calculating gap and sample URLhaus accordingly 
-
-
-safe_count = len(phiusiil_df[phiusiil_df['label'] == 1])
-malicious_count = len(phiusiil_df[phiusiil_df['label'] == 0])
-
-
-print(f"\nPhiUSIIL safe: {safe_count}")
-print(f"PhiUSIIL malicious: {malicious_count}")
-print(f"URLhaus malicious rows: {len(urlhaus_features_df)}")
-
-# Combining PhiUSIIL and URLhaus - no gap sampling, to use everydata entries of urlhaus
-
-combined_df = pd.concat([phiusiil_df, urlhaus_features_df], axis = 0, ignore_index= True)
-
-# Shuffle
-
-combined_df = combined_df.sample(frac=1, random_state=42).reset_index(drop=True)
-
-print(f"\nCombined dataset: {len(combined_df)} rows")
-print(f"Label distribution:\n{combined_df['label'].value_counts()}")
-
+# Dropping string column
 
 print("\nDropping string columns...")
 
@@ -250,21 +70,21 @@ print("\nDropping string columns...")
 string_cols_to_drop = []
 
 for col in ['URL', 'Title', 'Robots', 'TLD']:
-    if col in combined_df:
+    if col in phiusiil_df.columns:
         string_cols_to_drop.append(col)
 
 
 if string_cols_to_drop:
-    combined_df = combined_df.drop(columns=string_cols_to_drop)
+    phiusiil_df = phiusiil_df.drop(columns=string_cols_to_drop)
     print(f"Dropped: {string_cols_to_drop}")
 
-print(f"Final columns: {combined_df.shape[1]}")
+print(f"Final columns: {phiusiil_df.shape[1]}")
 
 
 print("\nSeprating features and labels...")
 
-X = combined_df.drop(columns=['label'])
-y = combined_df['label']
+X = phiusiil_df.drop(columns=['label'])
+y = phiusiil_df['label']
 
 
 # Saving column name before everything converts to numpy
@@ -287,6 +107,14 @@ print(f"Train set: {X_train.shape[0]} rows")
 print(f"Test set: {X_test.shape[0]} rows")
 print(f"Train label distribution:\n{y_train.value_counts()}")
 
+
+# Auto-detecting binary cols from original X_train BEFORE scaling
+
+binary_cols = []
+for col in X_train.columns:
+    unique_vals = set(X_train[col].dropna().unique())
+    if unique_vals.issubset({0, 1, 0.0, 1.0}):
+        binary_cols.append(col)
 
 
 # StandardScaler Pipeline 
@@ -322,6 +150,13 @@ print(f"Before SMOTE: {X_train_scaled.shape[0]} rows")
 print(f"After SMOTE: {X_train_balanced.shape[0]} rows")
 print(f"Balanced Label distribution:\n{pd.Series(y_train_balanced).value_counts()}")
 
+
+
+# Round them back after SMOTE
+
+X_train_balanced_df = pd.DataFrame(X_train_balanced, columns=feature_cols)
+X_train_balanced_df[binary_cols] = X_train_balanced_df[binary_cols].round()
+X_train_balanced = X_train_balanced_df.values
 
 
 print("\nSaving file...")

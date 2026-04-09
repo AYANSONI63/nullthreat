@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, roc_curve
 import pickle
 import os 
@@ -24,23 +23,12 @@ print(f"y_train : 0={int((y_train==0).sum())}, 1={int((y_train==1).sum())}")
 print(f"y_test : 0={int((y_test==0).sum())}, 1={int((y_test==1).sum())}")
 
 
-# Creating Validation split from training data
-
-print("\nCreating validation split from training data...")
-
-X_train_fit, X_val, y_train_fit, y_val = train_test_split(X_train, y_train, test_size=0.1, random_state=42, stratify=y_train)
-
-
-print(f"Training samples : {X_train_fit.shape[0]}")
-print(f"Validation samples: {X_val.shape[0]}")
-print(f"Val class distribution 0:{int((y_val==0).sum())}, 1={int((y_val==1).sum())}")
-
 
 # Building model 
 
 print("Building Model...")
 
-INPUT_SHAPE = X_train_fit.shape[1]
+INPUT_SHAPE = X_train.shape[1]
 
 model = tf.keras.Sequential([
     
@@ -135,8 +123,8 @@ class_weight = {
 }
 
 
-safe_count = int((y_train_fit == 1).sum())
-malicious_count = int((y_train_fit == 0).sum())
+safe_count = int((y_train == 1).sum())
+malicious_count = int((y_train == 0).sum())
 
 
 if safe_count != malicious_count:
@@ -153,10 +141,10 @@ else:
 print("Training model...")
 
 history = model.fit(
-    X_train_fit, y_train_fit,
+    X_train, y_train,
     epochs=50,
     batch_size=512,
-    validation_data=(X_val, y_val),
+    validation_split=0.1,
     callbacks=callbacks,
     class_weight=class_weight,
     shuffle=True,
@@ -254,4 +242,3 @@ print("TRAINING COMPLETE")
 print("="*50)
 print(f"ROC AUC        : {roc_auc:.4f}")
 print(f"Best threshold : {optimal_threshold:.4f}")
-
