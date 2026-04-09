@@ -117,22 +117,8 @@ callbacks = [
 # Slight extra penalty for missing malicious URLs
 
 
-class_weight = {
-    0:1.0, # Malicious
-    1:1.0  # Safe
-}
-
-
-safe_count = int((y_train == 1).sum())
-malicious_count = int((y_train == 0).sum())
-
-
-if safe_count != malicious_count:
-    class_weight[1] = malicious_count/safe_count
-    print(f"Classes weight adjusted: {class_weight}")
-
-else:
-    print("Classes are balanced - equal weights used")
+class_weight = {0: 1.0, 1: 1.2}
+print(f"Class weights: {class_weight}")
 
 
 
@@ -143,7 +129,7 @@ print("Training model...")
 history = model.fit(
     X_train, y_train,
     epochs=50,
-    batch_size=512,
+    batch_size=256,
     validation_split=0.1,
     callbacks=callbacks,
     class_weight=class_weight,
