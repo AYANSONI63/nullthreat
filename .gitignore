@@ -217,3 +217,37 @@ model/saved_model/
 __pycache__/
 *.pyc
 *.pyo
+
+# =========================
+# NullThreat Project
+# =========================
+
+# Raw datasets
+dataset/*.csv
+dataset/*.npy
+
+# Jupyter notebooks
+*.ipynb
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Training artifacts
+model/artifacts/X_*.csv
+model/artifacts/y_*.csv
+
+# Feature engineering & preprocessing
+model/artifacts/*.pkl
+model/artifacts/*.json
+
+# Trained models
+model/saved_model/
+
+# VS Code workspace settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
