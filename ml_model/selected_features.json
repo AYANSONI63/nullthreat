@@ -1,0 +1,20 @@
+[
+  "TLDLegitimateProb",
+  "NoOfOtherSpecialCharsInURL",
+  "LargestLineLength",
+  "DomainTitleMatchScore",
+  "HasFavicon",
+  "IsResponsive",
+  "HasDescription",
+  "NoOfiFrame",
+  "HasSocialNet",
+  "HasSubmitButton",
+  "HasHiddenFields",
+  "Pay",
+  "HasCopyrightInfo",
+  "NoOfImage",
+  "NoOfCSS",
+  "NoOfSelfRef",
+  "NoOfEmptyRef",
+  "NoOfExternalRef"
+]

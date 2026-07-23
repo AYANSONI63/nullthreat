@@ -206,9 +206,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Datasets — download using dataset/download_data.py
-dataset/*.csv
-dataset/*.npy
+# Raw datasets
+dataset/
 
 # Model weights
 model/saved_model/
@@ -222,28 +221,37 @@ __pycache__/
 # NullThreat Project
 # =========================
 
-# Raw datasets
-dataset/*.csv
-dataset/*.npy
-
-# Jupyter notebooks
-*.ipynb
 
 # Local databases
 *.db
 *.sqlite
 *.sqlite3
 
-# Training artifacts
-model/artifacts/X_*.csv
-model/artifacts/y_*.csv
+# ==========================================
+# NullThreat ML / DL Artifacts
+# ==========================================
 
-# Feature engineering & preprocessing
-model/artifacts/*.pkl
-model/artifacts/*.json
+# Deep Learning generated arrays
+dl_model/artifacts/*.npy
 
-# Trained models
-model/saved_model/
+# Deep Learning models
+dl_model/artifacts/*.pt
+dl_model/artifacts/*.pth
+
+# Machine Learning generated datasets
+ml_model/*.csv
+
+# Machine Learning trained models
+ml_model/*.pkl
+
+# Keep metadata/configuration files
+!dl_model/artifacts/char2idx.json
+!dl_model/artifacts/idx2char
+!dl_model/artifacts/label_encoder.pkl
+
+!ml_model/selected_features.json
+!ml_model/outlier_caps.json
+!ml_model/train_xgb.py
 
 # VS Code workspace settings
 .vscode/

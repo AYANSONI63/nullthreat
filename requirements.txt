@@ -10,3 +10,6 @@ imbalanced-learn
 matplotlib
 statsmodels
 xgboost
+numpy
+torch 
+torchvision
