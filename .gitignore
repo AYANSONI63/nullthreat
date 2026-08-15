@@ -242,7 +242,8 @@ dl_model/artifacts/*.pth
 ml_model/*.csv
 
 # Machine Learning trained models
-ml_model/*.pkl
+ml_model/models/*.pkl
+ml_model/models/*.json
 
 # Keep metadata/configuration files
 !dl_model/artifacts/char2idx.json

@@ -1,0 +1,353 @@
+{
+    "method": "XGBoost Feature Selection",
+    "random_state": 42,
+    "threshold_type": "median",
+    "threshold_value": 5.934422733844258e-05,
+    "total_input_features": 28,
+    "selected_feature_count": 14,
+    "removed_feature_count": 14,
+    "selected_features": [
+        "URLSimilarityIndex",
+        "CharContinuationRate",
+        "LineOfCode",
+        "HasFavicon",
+        "Robots",
+        "HasDescription",
+        "HasSocialNet",
+        "HasHiddenFields",
+        "HasCopyrightInfo",
+        "NoOfImage",
+        "NoOfCSS",
+        "NoOfJS",
+        "NoOfSelfRef",
+        "NoOfExternalRef"
+    ],
+    "removed_features": [
+        "URLLength",
+        "DomainLength",
+        "TLDLegitimateProb",
+        "URLCharProb",
+        "TLDLength",
+        "LetterRatioInURL",
+        "NoOfOtherSpecialCharsInURL",
+        "SpacialCharRatioInURL",
+        "LargestLineLength",
+        "DomainTitleMatchScore",
+        "IsResponsive",
+        "NoOfiFrame",
+        "HasSubmitButton",
+        "NoOfEmptyRef"
+    ],
+    "feature_importance": [
+        {
+            "rank": 1,
+            "feature": "URLSimilarityIndex",
+            "importance": 0.9911552667617798
+        },
+        {
+            "rank": 2,
+            "feature": "LineOfCode",
+            "importance": 0.0069193788804113865
+        },
+        {
+            "rank": 3,
+            "feature": "NoOfCSS",
+            "importance": 0.00023710457026027143
+        },
+        {
+            "rank": 4,
+            "feature": "NoOfJS",
+            "importance": 0.0002219321468146518
+        },
+        {
+            "rank": 5,
+            "feature": "HasSocialNet",
+            "importance": 0.0002159141149604693
+        },
+        {
+            "rank": 6,
+            "feature": "NoOfImage",
+            "importance": 0.00011419833754189312
+        },
+        {
+            "rank": 7,
+            "feature": "NoOfSelfRef",
+            "importance": 0.00011413711035856977
+        },
+        {
+            "rank": 8,
+            "feature": "HasHiddenFields",
+            "importance": 0.00010267576726619154
+        },
+        {
+            "rank": 9,
+            "feature": "HasCopyrightInfo",
+            "importance": 0.0001021473653963767
+        },
+        {
+            "rank": 10,
+            "feature": "Robots",
+            "importance": 9.628929547034204e-05
+        },
+        {
+            "rank": 11,
+            "feature": "HasDescription",
+            "importance": 9.579522884450853e-05
+        },
+        {
+            "rank": 12,
+            "feature": "HasFavicon",
+            "importance": 8.684088970767334e-05
+        },
+        {
+            "rank": 13,
+            "feature": "CharContinuationRate",
+            "importance": 6.919695442775264e-05
+        },
+        {
+            "rank": 14,
+            "feature": "NoOfExternalRef",
+            "importance": 6.14407254033722e-05
+        },
+        {
+            "rank": 15,
+            "feature": "DomainTitleMatchScore",
+            "importance": 5.724772927351296e-05
+        },
+        {
+            "rank": 16,
+            "feature": "LetterRatioInURL",
+            "importance": 5.358999624149874e-05
+        },
+        {
+            "rank": 17,
+            "feature": "LargestLineLength",
+            "importance": 4.845054718316533e-05
+        },
+        {
+            "rank": 18,
+            "feature": "URLCharProb",
+            "importance": 4.5714128646068275e-05
+        },
+        {
+            "rank": 19,
+            "feature": "NoOfiFrame",
+            "importance": 3.857488991343416e-05
+        },
+        {
+            "rank": 20,
+            "feature": "HasSubmitButton",
+            "importance": 3.228861896786839e-05
+        },
+        {
+            "rank": 21,
+            "feature": "TLDLegitimateProb",
+            "importance": 2.71095286734635e-05
+        },
+        {
+            "rank": 22,
+            "feature": "IsResponsive",
+            "importance": 2.4887445761123672e-05
+        },
+        {
+            "rank": 23,
+            "feature": "SpacialCharRatioInURL",
+            "importance": 2.1730345906689763e-05
+        },
+        {
+            "rank": 24,
+            "feature": "URLLength",
+            "importance": 1.5678278941777535e-05
+        },
+        {
+            "rank": 25,
+            "feature": "DomainLength",
+            "importance": 1.543192774988711e-05
+        },
+        {
+            "rank": 26,
+            "feature": "NoOfEmptyRef",
+            "importance": 1.435376634617569e-05
+        },
+        {
+            "rank": 27,
+            "feature": "NoOfOtherSpecialCharsInURL",
+            "importance": 1.2481799785746261e-05
+        },
+        {
+            "rank": 28,
+            "feature": "TLDLength",
+            "importance": 0.0
+        }
+    ],
+    "decision_report": {
+        "URLSimilarityIndex": {
+            "importance": 0.9911552667617798,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "LineOfCode": {
+            "importance": 0.0069193788804113865,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "NoOfCSS": {
+            "importance": 0.00023710457026027143,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "NoOfJS": {
+            "importance": 0.0002219321468146518,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "HasSocialNet": {
+            "importance": 0.0002159141149604693,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "NoOfImage": {
+            "importance": 0.00011419833754189312,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "NoOfSelfRef": {
+            "importance": 0.00011413711035856977,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "HasHiddenFields": {
+            "importance": 0.00010267576726619154,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "HasCopyrightInfo": {
+            "importance": 0.0001021473653963767,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "Robots": {
+            "importance": 9.628929547034204e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "HasDescription": {
+            "importance": 9.579522884450853e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "HasFavicon": {
+            "importance": 8.684088970767334e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "CharContinuationRate": {
+            "importance": 6.919695442775264e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "NoOfExternalRef": {
+            "importance": 6.14407254033722e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Selected",
+            "reason": "Importance above threshold."
+        },
+        "DomainTitleMatchScore": {
+            "importance": 5.724772927351296e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "LetterRatioInURL": {
+            "importance": 5.358999624149874e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "LargestLineLength": {
+            "importance": 4.845054718316533e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "URLCharProb": {
+            "importance": 4.5714128646068275e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "NoOfiFrame": {
+            "importance": 3.857488991343416e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "HasSubmitButton": {
+            "importance": 3.228861896786839e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "TLDLegitimateProb": {
+            "importance": 2.71095286734635e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "IsResponsive": {
+            "importance": 2.4887445761123672e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "SpacialCharRatioInURL": {
+            "importance": 2.1730345906689763e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "URLLength": {
+            "importance": 1.5678278941777535e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "DomainLength": {
+            "importance": 1.543192774988711e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "NoOfEmptyRef": {
+            "importance": 1.435376634617569e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "NoOfOtherSpecialCharsInURL": {
+            "importance": 1.2481799785746261e-05,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        },
+        "TLDLength": {
+            "importance": 0.0,
+            "threshold": 5.934422733844258e-05,
+            "decision": "Removed",
+            "reason": "Importance below threshold."
+        }
+    }
+}

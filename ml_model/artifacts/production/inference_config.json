@@ -1,0 +1,25 @@
+{
+    "model": {
+        "name": "xgboost_baseline_13_features",
+        "type": "XGBClassifier",
+        "objective": "binary:logistic"
+    },
+    "decision_threshold": 0.34,
+    "positive_class": 1,
+    "negative_class": 0,
+    "features": [
+        "NoOfExternalRef",
+        "NoOfSelfRef",
+        "LineOfCode",
+        "HasDescription",
+        "HasSocialNet",
+        "CharContinuationRate",
+        "NoOfImage",
+        "HasCopyrightInfo",
+        "NoOfCSS",
+        "NoOfJS",
+        "HasFavicon",
+        "Robots",
+        "HasHiddenFields"
+    ]
+}

@@ -146,3 +146,27 @@ def pad_sequences(
 
 
     return np.array(padded_sequences, dtype=np.int64)
+
+
+
+
+# Helper function 
+
+def preprocess_single_url(
+        url, 
+        char2idx,
+        max_length=256
+):
+    
+    encoded = encode_url(
+        url,
+        char2idx
+    )
+
+    padded = pad_sequences(
+        [encoded],
+        max_length=max_length
+    )
+
+
+    return padded

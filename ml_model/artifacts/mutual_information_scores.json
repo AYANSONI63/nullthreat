@@ -1,0 +1,154 @@
+{
+    "ranking": [
+        {
+            "rank": 1,
+            "feature": "URLSimilarityIndex",
+            "mi_score": 0.6769574694124787
+        },
+        {
+            "rank": 2,
+            "feature": "LineOfCode",
+            "mi_score": 0.6001099100435277
+        },
+        {
+            "rank": 3,
+            "feature": "NoOfExternalRef",
+            "mi_score": 0.5615149856149801
+        },
+        {
+            "rank": 4,
+            "feature": "NoOfImage",
+            "mi_score": 0.5436139796912294
+        },
+        {
+            "rank": 5,
+            "feature": "NoOfSelfRef",
+            "mi_score": 0.5276823334113923
+        },
+        {
+            "rank": 6,
+            "feature": "NoOfJS",
+            "mi_score": 0.49811938978905035
+        },
+        {
+            "rank": 7,
+            "feature": "LargestLineLength",
+            "mi_score": 0.46177108023352176
+        },
+        {
+            "rank": 8,
+            "feature": "NoOfCSS",
+            "mi_score": 0.4471679561101507
+        },
+        {
+            "rank": 9,
+            "feature": "HasSocialNet",
+            "mi_score": 0.4103638165958481
+        },
+        {
+            "rank": 10,
+            "feature": "LetterRatioInURL",
+            "mi_score": 0.3830701593748038
+        },
+        {
+            "rank": 11,
+            "feature": "HasCopyrightInfo",
+            "mi_score": 0.3432154942902472
+        },
+        {
+            "rank": 12,
+            "feature": "HasDescription",
+            "mi_score": 0.3000962500794313
+        },
+        {
+            "rank": 13,
+            "feature": "NoOfOtherSpecialCharsInURL",
+            "mi_score": 0.24544180039818642
+        },
+        {
+            "rank": 14,
+            "feature": "DomainTitleMatchScore",
+            "mi_score": 0.21123652284513272
+        },
+        {
+            "rank": 15,
+            "feature": "SpacialCharRatioInURL",
+            "mi_score": 0.20565694322074157
+        },
+        {
+            "rank": 16,
+            "feature": "HasSubmitButton",
+            "mi_score": 0.2051942912346998
+        },
+        {
+            "rank": 17,
+            "feature": "TLDLegitimateProb",
+            "mi_score": 0.1920129737265477
+        },
+        {
+            "rank": 18,
+            "feature": "URLTitleMatchScore",
+            "mi_score": 0.1900065398354529
+        },
+        {
+            "rank": 19,
+            "feature": "IsResponsive",
+            "mi_score": 0.18372751254133446
+        },
+        {
+            "rank": 20,
+            "feature": "URLLength",
+            "mi_score": 0.17027642917595043
+        },
+        {
+            "rank": 21,
+            "feature": "NoOfEmptyRef",
+            "mi_score": 0.16985211266162814
+        },
+        {
+            "rank": 22,
+            "feature": "CharContinuationRate",
+            "mi_score": 0.1693891826253
+        },
+        {
+            "rank": 23,
+            "feature": "NoOfiFrame",
+            "mi_score": 0.168091037329271
+        },
+        {
+            "rank": 24,
+            "feature": "HasHiddenFields",
+            "mi_score": 0.1572801450232768
+        },
+        {
+            "rank": 25,
+            "feature": "NoOfLettersInURL",
+            "mi_score": 0.15640082829707302
+        },
+        {
+            "rank": 26,
+            "feature": "HasFavicon",
+            "mi_score": 0.14888109847012188
+        },
+        {
+            "rank": 27,
+            "feature": "URLCharProb",
+            "mi_score": 0.1388006307866172
+        },
+        {
+            "rank": 28,
+            "feature": "Robots",
+            "mi_score": 0.09597949855381493
+        },
+        {
+            "rank": 29,
+            "feature": "DomainLength",
+            "mi_score": 0.09061891891011253
+        },
+        {
+            "rank": 30,
+            "feature": "TLDLength",
+            "mi_score": 0.02709637419008848
+        }
+    ]
+}

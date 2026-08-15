@@ -1,0 +1,51 @@
+{
+    "threshold": 0.95,
+    "selected_features": [
+        "URLLength",
+        "DomainLength",
+        "URLSimilarityIndex",
+        "CharContinuationRate",
+        "TLDLegitimateProb",
+        "URLCharProb",
+        "TLDLength",
+        "LetterRatioInURL",
+        "NoOfOtherSpecialCharsInURL",
+        "SpacialCharRatioInURL",
+        "LineOfCode",
+        "LargestLineLength",
+        "DomainTitleMatchScore",
+        "HasFavicon",
+        "Robots",
+        "IsResponsive",
+        "HasDescription",
+        "NoOfiFrame",
+        "HasSocialNet",
+        "HasSubmitButton",
+        "HasHiddenFields",
+        "HasCopyrightInfo",
+        "NoOfImage",
+        "NoOfCSS",
+        "NoOfJS",
+        "NoOfSelfRef",
+        "NoOfEmptyRef",
+        "NoOfExternalRef"
+    ],
+    "removed_features": [
+        "URLTitleMatchScore",
+        "NoOfLettersInURL"
+    ],
+    "decision_report": {
+        "NoOfLettersInURL": {
+            "kept": "URLLength",
+            "correlation": 0.9652811720229746,
+            "removed_mi": 0.15640082829707302,
+            "kept_mi": 0.17027642917595043
+        },
+        "URLTitleMatchScore": {
+            "kept": "DomainTitleMatchScore",
+            "correlation": 0.9603873703335837,
+            "removed_mi": 0.1900065398354529,
+            "kept_mi": 0.21123652284513272
+        }
+    }
+}

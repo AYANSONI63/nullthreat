@@ -1,0 +1,54 @@
+{
+    "model": "xgboost_baseline_14_features",
+    "feature_count": 14,
+    "features": [
+        "URLSimilarityIndex",
+        "CharContinuationRate",
+        "LineOfCode",
+        "HasFavicon",
+        "Robots",
+        "HasDescription",
+        "HasSocialNet",
+        "HasHiddenFields",
+        "HasCopyrightInfo",
+        "NoOfImage",
+        "NoOfCSS",
+        "NoOfJS",
+        "NoOfSelfRef",
+        "NoOfExternalRef"
+    ],
+    "train": {
+        "accuracy": 0.9999841049497187,
+        "precision": 0.9999722042064301,
+        "recall": 1.0,
+        "f1_score": 0.9999861019100609,
+        "roc_auc": 0.9999999997133581,
+        "confusion_matrix": [
+            [
+                80808,
+                3
+            ],
+            [
+                0,
+                107927
+            ]
+        ]
+    },
+    "validation": {
+        "accuracy": 0.999869593566616,
+        "precision": 0.9997787610619469,
+        "recall": 1.0,
+        "f1_score": 0.9998893682929527,
+        "roc_auc": 1.0,
+        "confusion_matrix": [
+            [
+                9445,
+                3
+            ],
+            [
+                0,
+                13557
+            ]
+        ]
+    }
+}
